@@ -1,12 +1,14 @@
-FROM 3.8.7-alpine3.13
+FROM python:3.8.7-alpine3.12
 
-COPY /crawler/. /app
+COPY . /app
 WORKDIR /app
 
+RUN apk add libxml2-dev libxslt-dev build-base
 RUN pip --disable-pip-version-check --no-cache-dir \
-    install -r ./requirements.txt
+    install -r ./docker/requirements.txt
+
 
 RUN addgroup -S crawlergroup && adduser -S crawleruser -G crawlergroup
 USER crawleruser
 
-CMD ["python /app/app.py"]
+CMD ["python", "/app/app.py"]
